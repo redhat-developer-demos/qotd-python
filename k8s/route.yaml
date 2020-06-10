@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: qotd
+  name: qotd
+spec:
+  port:
+    targetPort: 10000-tcp
+  to:
+    kind: Service
+    name: qotd
+    weight: 100
