@@ -51,4 +51,5 @@ def getRandom():
     n = random.randint(0,5)
     return jsonify(quotes[n])
 
-app.run()
+if __name__ == '__main__':
+    app.run(host="localhost", port=10000)
