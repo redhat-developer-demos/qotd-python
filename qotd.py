@@ -7,8 +7,8 @@ app.config["DEBUG"] = True
 
 quotes = [
     {'id': 0,
-     'quotation': '40 is the old age of youth, while 50 is the youth of old age',
-     'author': 'Victor Hugo'},
+     'quotation': 'It is not only what you do, but also the attitude you bring to it that makes you a success.',
+     'author': 'Don Schenck'},
     {'id': 1,
      'quotation': 'Knowledge is power.',
      'author': 'Francis Bacon'},
