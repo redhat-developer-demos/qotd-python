@@ -19,7 +19,7 @@ quotes = [
      'quotation': 'This above all, to thine own self be true.',
      'author': 'William Shakespeare'},
     {'id': 4,
-     'quotation': 'I got a fever, and the only prescription is MOAR COWBELL!',
+     'quotation': 'I got a fever, and the only prescription is more cowbell.',
      'author': 'Will Ferrell'},
     {'id': 5,
      'quotation': 'Do be do be dooo.',
