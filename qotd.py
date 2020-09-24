@@ -19,8 +19,8 @@ quotes = [
      'quotation': 'This above all, to thine own self be true.',
      'author': 'William Shakespeare'},
     {'id': 4,
-     'quotation': 'Never complain. Never explain.',
-     'author': 'Katharine Hepburn'},
+     'quotation': 'I got a fever, and the only prescription is MOAR COWBELL!',
+     'author': 'Will Ferrell'},
     {'id': 5,
      'quotation': 'Do be do be dooo.',
      'author': 'Frank Sinatra'}
