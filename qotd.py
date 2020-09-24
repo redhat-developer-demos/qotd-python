@@ -22,8 +22,8 @@ quotes = [
      'quotation': 'I got a fever, and the only prescription is more cowbell.',
      'author': 'Will Ferrell'},
     {'id': 5,
-     'quotation': 'Do be do be dooo.',
-     'author': 'Frank Sinatra'}
+     'quotation': 'Anyone who has ever made anything of importance was disciplined.',
+     'author': 'Andrew Hendrixson'}
 ]
 
 @app.route('/', methods=['GET'])
