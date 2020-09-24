@@ -7,7 +7,7 @@ app.config["DEBUG"] = True
 
 quotes = [
     {'id': 0,
-     'quotation': 'It is not only what you do, but also the attitude you bring to it that makes you a success.',
+     'quotation': 'It is not only what you do, but also the attitude you bring to it, that makes you a success.',
      'author': 'Don Schenck'},
     {'id': 1,
      'quotation': 'Knowledge is power.',
