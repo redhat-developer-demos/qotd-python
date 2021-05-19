@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: qotd
-  name: qotd
+    app: quotes
+  name: quotes
 spec:
   ports:
   - name: 10000-tcp
@@ -19,6 +19,6 @@ spec:
     protocol: TCP
     targetPort: 8778
   selector:
-    app: qotd
+    app: quotes
   sessionAffinity: None
-  type: NodePort
+  type: ClusterIP
