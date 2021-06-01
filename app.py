@@ -36,28 +36,33 @@ quotes = [
 
 @app.route('/', methods=['GET'])
 def home():
-    return "qotd"
+    return prepareResponse("qotd")
 
 @app.route('/version', methods=['GET'])
 def version():
-    return "2.0.0"
+    return prepareResponse("3.0.0")
 
 @app.route('/writtenin', methods=['GET'])
 def writtenin():
-    return "Python"
+    return prepareResponse("Python")
 
 @app.route('/quotes', methods=['GET'])
 def getQuotes():
-    return jsonify(replaceHostname(quotes))
+    return prepareResponse(jsonify(replaceHostname(quotes)))
 
 @app.route('/quotes/<int:id>', methods=['GET'])
 def getQuoteById(id):
-    return jsonify(replaceHostname(quotes[id]))
+    return prepareResponse(jsonify(replaceHostname(quotes[id])))
 
 @app.route('/quotes/random', methods=['GET'])
 def getRandom():
     n = random.randint(0,5)
-    return jsonify(replaceHostname(quotes[n]))
+    return prepareResponse(jsonify(replaceHostname(quotes[n])))
+
+def prepareResponse(response):
+    # Enable Access-Control-Allow-Origin
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 def replaceHostname(jsondoc):
     q = json.dumps(jsondoc)
