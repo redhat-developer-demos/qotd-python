@@ -3,61 +3,72 @@ from flask import request, jsonify
 import random
 import socket
 import json
+import sys
+import mariadb
+
+quotes = []
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-quotes = [
-    {'id': 0,
-     'quotation': 'It is not only what you do, but also the attitude you bring to it, that makes you a success.',
-     'author': 'Don Schenck',
-     'hostname': '{hostname}'},
-    {'id': 1,
-     'quotation': 'Knowledge is power.',
-     'author': 'Francis Bacon',
-     'hostname': '{hostname}'},
-    {'id': 2,
-     'quotation': 'Life is really simple, but we insist on making it complicated.',
-     'author': 'Confucius',
-     'hostname': '{hostname}'},
-    {'id': 3,
-     'quotation': 'This above all, to thine own self be true.',
-     'author': 'William Shakespeare',
-     'hostname': '{hostname}'},
-    {'id': 4,
-     'quotation': 'I got a fever, and the only prescription is more cowbell.',
-     'author': 'Will Ferrell',
-     'hostname': '{hostname}'},
-    {'id': 5,
-     'quotation': 'Anyone who has ever made anything of importance was disciplined.',
-     'author': 'Andrew Hendrixson',
-     'hostname': '{hostname}'},
-]
-
 @app.route('/', methods=['GET'])
 def home():
-    return prepareResponse("qotd")
+    return prepareResponse(jsonify("qotd"))
 
 @app.route('/version', methods=['GET'])
 def version():
-    return prepareResponse("3.0.0")
+    return prepareResponse(jsonify("2.0.0"))
 
 @app.route('/writtenin', methods=['GET'])
 def writtenin():
-    return prepareResponse("Python")
+    return prepareResponse(jsonify("Python"))
 
 @app.route('/quotes', methods=['GET'])
 def getQuotes():
-    return prepareResponse(jsonify(replaceHostname(quotes)))
-
+    try:
+        conn = mariadb.connect(
+            user="root",
+            password="admin",
+            host="mysql",
+            database="quotesdb",
+            port=3306)
+        mycursor = conn.cursor(dictionary=True)
+        #mycursor = conn.cursor()
+        mycursor.execute("SELECT '-hostname-' as hostname, id, quotation, author FROM quotes ORDER BY author, id")
+        rows = mycursor.fetchall()
+        conn.close()
+        #quotes = json.dumps(rows)
+        quotes = rows
+        return prepareResponse(jsonify(quotes))
+        #return prepareResponse((quotes))
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
+  
 @app.route('/quotes/<int:id>', methods=['GET'])
 def getQuoteById(id):
     return prepareResponse(jsonify(replaceHostname(quotes[id])))
 
 @app.route('/quotes/random', methods=['GET'])
 def getRandom():
-    n = random.randint(0,5)
-    return prepareResponse(jsonify(replaceHostname(quotes[n])))
+    try:
+        conn = mariadb.connect(
+            user="root",
+            password="admin",
+            host="mysql",
+            database="quotesdb",
+            port=3306)
+        
+        mycursor = conn.cursor(dictionary=True)
+        mycursor.execute("SELECT '-hostname-' as hostname, id, quotation, author FROM quotes ORDER BY author, id")
+        rows = mycursor.fetchall()
+        n = random.randint(0,(mycursor.rowcount)-1)
+        conn.close()
+        quotes = rows
+        return prepareResponse(jsonify(replaceHostname(quotes[n])))
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
 
 def prepareResponse(response):
     # Enable Access-Control-Allow-Origin
@@ -66,7 +77,7 @@ def prepareResponse(response):
 
 def replaceHostname(jsondoc):
     q = json.dumps(jsondoc)
-    q = q.replace('{hostname}', socket.gethostname())
+    q = q.replace('-hostname-', socket.gethostname())
     return json.loads(q)
 
 if __name__ == '__main__':
