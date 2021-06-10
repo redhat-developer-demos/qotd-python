@@ -44,7 +44,7 @@ def getRandom():
         conn = mariadb.connect(
             user="root",
             password="admin",
-            host=os.environ["DB_SERVICE_NAME"],
+            host=os.environ['DB_SERVICE_NAME'],
             database="quotesdb",
             port=3306)
         
@@ -75,7 +75,7 @@ def main():
         conn = mariadb.connect(
             user="root",
             password="admin",
-            host="mysql",
+            host=os.environ['DB_SERVICE_NAME'],
             database="quotesdb",
             port=3306)
         mycursor = conn.cursor(dictionary=True)
