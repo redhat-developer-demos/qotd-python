@@ -21,3 +21,6 @@ spec:
           ports:
             - containerPort: 10000
               protocol: TCP
+          env:
+          - name: DB_SERVICE_NAME
+            value: "mysql"

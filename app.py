@@ -1,12 +1,14 @@
 import flask
 from flask import request, jsonify
 import random
+import os
 import socket
 import json
 import sys
 import mariadb
 
 quotes = []
+quoteCount = 0
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -23,27 +25,14 @@ def version():
 def writtenin():
     return prepareResponse(jsonify("Python"))
 
+@app.route('/health', methods=['GET'])
+def health():
+    return 'foo'
+
 @app.route('/quotes', methods=['GET'])
 def getQuotes():
-    try:
-        conn = mariadb.connect(
-            user="root",
-            password="admin",
-            host="mysql",
-            database="quotesdb",
-            port=3306)
-        mycursor = conn.cursor(dictionary=True)
-        #mycursor = conn.cursor()
-        mycursor.execute("SELECT '-hostname-' as hostname, id, quotation, author FROM quotes ORDER BY author, id")
-        rows = mycursor.fetchall()
-        conn.close()
-        #quotes = json.dumps(rows)
-        quotes = rows
-        return prepareResponse(jsonify(quotes))
-        #return prepareResponse((quotes))
-    except mariadb.Error as e:
-        print(f"Error connecting to MariaDB Platform: {e}")
-        sys.exit(1)
+    global quotes
+    return prepareResponse(jsonify(quotes))
   
 @app.route('/quotes/<int:id>', methods=['GET'])
 def getQuoteById(id):
@@ -55,7 +44,7 @@ def getRandom():
         conn = mariadb.connect(
             user="root",
             password="admin",
-            host="mysql",
+            host=os.environ["DB_SERVICE_NAME"],
             database="quotesdb",
             port=3306)
         
@@ -79,6 +68,23 @@ def replaceHostname(jsondoc):
     q = json.dumps(jsondoc)
     q = q.replace('-hostname-', socket.gethostname())
     return json.loads(q)
+
+def main():
+    global quotes
+    try:
+        conn = mariadb.connect(
+            user="root",
+            password="admin",
+            host="mysql",
+            database="quotesdb",
+            port=3306)
+        mycursor = conn.cursor(dictionary=True)
+        mycursor.execute("SELECT '-hostname-' as hostname, id, quotation, author FROM quotes ORDER BY author, id")
+        quotes = mycursor.fetchall()
+        conn.close()
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
 
 if __name__ == '__main__':
     app.run(host="localhost", port=10000)

@@ -21,4 +21,4 @@ spec:
   selector:
     app: quotes
   sessionAffinity: None
-  type: ClusterIP
+  type: NodePort
