@@ -45,6 +45,7 @@ def getRandom():
             user="root",
             password="admin",
             host=os.environ['DB_SERVICE_NAME'],
+#            host="mysql",
             database="quotesdb",
             port=3306)
         
