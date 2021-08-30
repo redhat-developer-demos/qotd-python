@@ -1,5 +1,5 @@
 import flask
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 import random
 import socket
 import json
@@ -36,15 +36,21 @@ quotes = [
 
 @app.route('/', methods=['GET'])
 def home():
-    return prepareResponse("qotd")
+    response = make_response("qotd")
+    response.mimetype = "text/plain"
+    return prepareResponse(response)
 
 @app.route('/version', methods=['GET'])
 def version():
-    return prepareResponse("3.0.0")
+    response = make_response("v1")
+    response.mimetype = "text/plain"
+    return prepareResponse(response)
 
 @app.route('/writtenin', methods=['GET'])
 def writtenin():
-    return prepareResponse("Python")
+    response = make_response("Python 3.8")
+    response.mimetype = "text/plain"
+    return prepareResponse(response)
 
 @app.route('/quotes', methods=['GET'])
 def getQuotes():
