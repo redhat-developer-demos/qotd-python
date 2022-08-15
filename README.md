@@ -5,4 +5,5 @@ Container (docker, Kubernetes) image of this can be found at: quay.io/donschenck
 
 
 Switch to new image:  
+`kubectl set env deployment/quotes DB_SERVICE_NAME=mysql`  
 `kubectl set image deploy quotes quotes=quay.io/donschenck/quotes:v2`  
