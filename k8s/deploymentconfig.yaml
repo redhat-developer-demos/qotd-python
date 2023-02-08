@@ -4,6 +4,8 @@ metadata:
   name: qotd
   labels:
     app: qotd
+    sandbox: learn-kubernetes
+    learn-kubernetes: quotes
 spec:
   selector:
     app: qotd
