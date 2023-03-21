@@ -5,7 +5,7 @@ metadata:
   labels:
     app: quotes
     sandbox: learn-kubernetes
-    sandbox-learn-kubernetes: quotes
+    learn-kubernetes: quotes
 spec:
   replicas: 1
   selector:
