@@ -31,7 +31,7 @@ def health():
 
 @app.route('/quotes', methods=['GET'])
 def getQuotes():
-    global quotes
+#    global quotes
     return prepareResponse(jsonify(quotes))
   
 @app.route('/quotes/<int:id>', methods=['GET'])
