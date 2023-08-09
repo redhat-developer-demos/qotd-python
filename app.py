@@ -44,8 +44,9 @@ def getRandom():
         conn = mariadb.connect(
             user="root",
             password="admin",
-            host=os.environ['DB_SERVICE_NAME'],
+#            host=os.environ['DB_SERVICE_NAME'],
 #            host="mysql",
+            host="mysql-rhn-engineering-dsch-dev.apps.sandbox-m3.1530.p1.openshiftapps.com",
             database="quotesdb",
             port=3306)
         
