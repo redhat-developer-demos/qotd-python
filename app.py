@@ -31,12 +31,46 @@ def health():
 
 @app.route('/quotes', methods=['GET'])
 def getQuotes():
-#    global quotes
-    return prepareResponse(jsonify(quotes))
+    try:
+        conn = mariadb.connect(
+            user="root",
+            password="admin",
+            host=os.environ['DB_SERVICE_NAME'],
+#            host="mysql",
+            database="quotesdb",
+            port=3306)
+        
+        mycursor = conn.cursor(dictionary=True)
+        mycursor.execute("SELECT '-hostname-' as hostname, id, quotation, author FROM quotes ORDER BY author, id")
+        rows = mycursor.fetchall()
+        conn.close()
+        quotes = rows
+        return prepareResponse(jsonify(quotes))
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
+
   
 @app.route('/quotes/<int:id>', methods=['GET'])
 def getQuoteById(id):
-    return prepareResponse(jsonify(replaceHostname(quotes[id])))
+    try:
+        conn = mariadb.connect(
+            user="root",
+            password="admin",
+            host=os.environ['DB_SERVICE_NAME'],
+#            host="mysql",
+            database="quotesdb",
+            port=3306)
+        
+        mycursor = conn.cursor(dictionary=True)
+        mycursor.execute("SELECT '-hostname-' as hostname, id, quotation, author FROM quotes ORDER BY author, id")
+        rows = mycursor.fetchall()
+        conn.close()
+        quotes = rows
+        return prepareResponse(jsonify(replaceHostname(quotes[id])))
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+        sys.exit(1)
 
 @app.route('/quotes/random', methods=['GET'])
 def getRandom():
@@ -44,9 +78,8 @@ def getRandom():
         conn = mariadb.connect(
             user="root",
             password="admin",
-#            host=os.environ['DB_SERVICE_NAME'],
+            host=os.environ['DB_SERVICE_NAME'],
 #            host="mysql",
-            host="mysql-rhn-engineering-dsch-dev.apps.sandbox-m3.1530.p1.openshiftapps.com",
             database="quotesdb",
             port=3306)
         
@@ -72,20 +105,10 @@ def replaceHostname(jsondoc):
     return json.loads(q)
 
 def main():
-    global quotes
     try:
-        conn = mariadb.connect(
-            user="root",
-            password="admin",
-            host=os.environ['DB_SERVICE_NAME'],
-            database="quotesdb",
-            port=3306)
-        mycursor = conn.cursor(dictionary=True)
-        mycursor.execute("SELECT '-hostname-' as hostname, id, quotation, author FROM quotes ORDER BY author, id")
-        quotes = mycursor.fetchall()
-        conn.close()
+        print("QUOTES v2 is running")
     except mariadb.Error as e:
-        print(f"Error connecting to MariaDB Platform: {e}")
+        print("Error starting QUOTES v2")
         sys.exit(1)
 
 if __name__ == '__main__':
