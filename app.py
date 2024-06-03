@@ -1,10 +1,12 @@
 import flask
 from flask import request, jsonify, make_response
+from flask_cors import CORS
 import random
 import socket
 import json
 
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 quotes = [

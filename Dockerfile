@@ -1,8 +1,6 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
 FROM registry.access.redhat.com/ubi8/python-38:latest
 
-EXPOSE 10000
-
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE 1
 
@@ -20,6 +18,8 @@ ADD . /app
 ##RUN useradd appuser && chown -R appuser /app
 ##USER appuser
 USER 1001 
+
+EXPOSE 10000
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 CMD ["gunicorn", "--bind", "0.0.0.0:10000", "app:app"]
