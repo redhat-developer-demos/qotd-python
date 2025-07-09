@@ -28,7 +28,7 @@ quotes = [
      'hostname': '{hostname}'},
     {'id': 4,
      'quotation': 'I got a fever, and the only prescription is more cowbell.',
-     'author': 'Will Ferrell',
+     'author': 'Christopher Walken',
      'hostname': '{hostname}'},
     {'id': 5,
      'quotation': 'Anyone who has ever made anything of importance was disciplined.',
