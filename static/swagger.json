@@ -1,0 +1,142 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "qotd-python",
+    "version": "1.0.0",
+    "description": "Quote of the Day API built with Flask"
+  },
+  "host": "localhost:10000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Home endpoint",
+        "description": "Returns a plain text identifier for the API.",
+        "produces": ["text/plain"],
+        "responses": {
+          "200": {
+            "description": "Plain text response",
+            "schema": {
+              "type": "string",
+              "example": "qotd"
+            }
+          }
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "summary": "API version",
+        "description": "Returns the version of the API.",
+        "produces": ["text/plain"],
+        "responses": {
+          "200": {
+            "description": "Version string",
+            "schema": {
+              "type": "string",
+              "example": "v1"
+            }
+          }
+        }
+      }
+    },
+    "/writtenin": {
+      "get": {
+        "summary": "Language used",
+        "description": "Returns the programming language used to write the API.",
+        "produces": ["text/plain"],
+        "responses": {
+          "200": {
+            "description": "Language string",
+            "schema": {
+              "type": "string",
+              "example": "Python 3.8"
+            }
+          }
+        }
+      }
+    },
+    "/quotes": {
+      "get": {
+        "summary": "Get all quotes",
+        "description": "Returns an array of all quote objects.",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Array of quote objects",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Quote"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/quotes/{id}": {
+      "get": {
+        "summary": "Get quote by ID",
+        "description": "Returns a single quote object by its ID.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the quote"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single quote object",
+            "schema": {
+              "$ref": "#/definitions/Quote"
+            }
+          }
+        }
+      }
+    },
+    "/quotes/random": {
+      "get": {
+        "summary": "Get random quote",
+        "description": "Returns a randomly selected quote object.",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Random quote object",
+            "schema": {
+              "$ref": "#/definitions/Quote"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Quote": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "quotation": {
+          "type": "string",
+          "example": "Knowledge is power."
+        },
+        "author": {
+          "type": "string",
+          "example": "Francis Bacon"
+        },
+        "hostname": {
+          "type": "string",
+          "example": "my-host.local"
+        }
+      },
+      "required": ["id", "quotation", "author", "hostname"]
+    }
+  }
+}
